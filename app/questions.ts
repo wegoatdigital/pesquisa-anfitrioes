@@ -1,8 +1,8 @@
 export type Answers = Record<string,string|string[]>;
 export type Question = {id:string;title:string;type:'radio'|'check'|'text'|'number'|'input';options?:string[];hint?:string;optional?:boolean;max?:number;exclusive?:string[];when?:string};
-export const FORM_VERSION='2026-09-28-v4-netlify';
+export const FORM_VERSION='2026-09-28-v5-todos';
 export const activeRoles=['Sou proprietário e faço a gestão','Sou proprietário e terceirizo toda a gestão','Sou proprietário e divido a gestão com outra pessoa ou empresa','Administro imóveis de terceiros'];
-export const stages=['Seu perfil','Sua rotina','Controle financeiro','Solução e modelo de negócio','Cancelamento e interesse real'];
+export const stages=['Seu perfil','Rotina e expectativas','Controle financeiro','Solução e modelo de negócio','Cancelamento e interesse real'];
 export const solutionNames=['Básico','Plus','Gestão Completa','Modo Anfitrião (6 ou mais imóveis)'];
 export const solutions=[
  {name:'Básico',audience:'Para quem quer organizar a gestão e continuar operando o imóvel.',features:['Calendário único, sincronização de reservas e bloqueio automático entre os canais conectados','Receitas por reserva, taxas dos canais, despesas e saldo por imóvel','Relatório mensal exportável e histórico de lançamentos para conferência'],operation:'Você ou sua equipe cuida dos anúncios, hóspedes, limpeza e manutenção.'},
@@ -14,6 +14,9 @@ export const billingOptions=['Mensalidade fixa por imóvel','Percentual sobre as
 export const groups:Question[][]=[
 [
  {id:'role',title:'Qual situação descreve você hoje?',type:'radio',options:[...activeRoles,'Comprei um imóvel, mas ainda não comecei a anunciar','Estou avaliando investir, mas ainda não tenho imóvel para temporada','Nenhuma das anteriores']},
+ {id:'profile_other',title:'Como você se relaciona com o mercado de imóveis de temporada?',type:'text',optional:true,when:'other_role',hint:'Pode contar seu interesse, experiência ou motivo para participar, mesmo que não pretenda ter um imóvel.'},
+ {id:'future_properties',title:'Quantos imóveis você imagina ter ou acompanhar no futuro?',type:'radio',when:'prospective',options:['1','2','3','4','5','6 ou mais','Ainda não sei','Não pretendo ter imóveis']},
+ {id:'future_location',title:'Em qual cidade ou região você tem interesse?',type:'text',when:'prospective',hint:'Se ainda não decidiu ou não pretende investir, pode informar isso.'},
  {id:'properties',title:'Quantos imóveis de temporada você acompanha ou administra atualmente?',type:'number',hint:'Conte os imóveis já anunciados, mesmo que estejam sem reservas. Não conte o mesmo imóvel duas vezes por estar em mais de um canal.',when:'active'},
  {id:'location',title:'Onde ficam esses imóveis?',type:'text',hint:'Informe a cidade e o estado. Se tiver imóveis em mais de uma cidade, liste todas. Ex.: Joinville/SC; Curitiba/PR.',when:'active'},
  {id:'tenure',title:'Há quanto tempo você acompanha ou administra imóveis de temporada?',type:'radio',options:['Menos de 3 meses','De 3 a 11 meses','De 1 a menos de 3 anos','3 anos ou mais'],when:'active'},
@@ -61,11 +64,32 @@ export const groups:Question[][]=[
 
 ]
 ];
+// Expectativas têm campos próprios para não serem confundidas com experiência real.
+export const prospectiveGroups:Question[][]=[
+ [
+  {id:'future_challenges',title:'Se fosse administrar um imóvel, quais atividades parecem mais desafiadoras?',type:'check',max:3,options:['Atender hóspedes','Organizar limpeza e lavanderia','Controlar reservas e calendário','Definir o valor das diárias','Controlar receitas e despesas','Resolver manutenção','Escolher prestadores','Criar e divulgar anúncios','Ainda não sei','Não se aplica'],exclusive:['Ainda não sei','Não se aplica']},
+  {id:'future_management',title:'Como você imagina organizar a gestão?',type:'radio',options:['Faria tudo por conta própria','Dividiria com familiares ou parceiros','Usaria um sistema com meus próprios prestadores','Contrataria uma empresa para a gestão completa','Ainda não decidi','Não se aplica']},
+  {id:'future_cleaning',title:'Quem você imagina que cuidaria da limpeza?',type:'check',options:['Eu ou alguém da família','Profissional autônomo','Empresa de limpeza','Equipe da gestora','Ainda não sei','Não se aplica'],exclusive:['Ainda não sei','Não se aplica']},
+  {id:'future_hours',title:'Quanto tempo por semana você estaria disposto a dedicar à gestão?',type:'radio',options:['Nenhum, gostaria de delegar tudo','Menos de 2 horas','De 2 a 5 horas','Mais de 5 a 10 horas','Mais de 10 horas','Ainda não sei','Não se aplica']},
+  {id:'future_tools',title:'Quais ferramentas você conhece ou consideraria usar para organizar a gestão?',type:'check',options:['Recursos gratuitos do Airbnb ou Booking','Excel ou Google Planilhas','Agenda ou Google Agenda','WhatsApp','Stays','Hospitable','Smoobu','Guesty','Lodgify','PriceLabs','Sistema próprio','Outra ferramenta','Ainda não conheço ferramentas','Não se aplica'],exclusive:['Ainda não conheço ferramentas','Não se aplica']},
+  {id:'future_preparation',title:'Você já tentou organizar ou planejar essa atividade?',type:'radio',options:['Sim, montei uma planilha ou processo','Sim, pesquisei ou testei sistemas','Sim, desenvolvi ou contratei uma solução própria','Estou começando a pesquisar','Ainda não fiz isso','Não se aplica']},
+  {id:'future_preparation_details',title:'O que você já pesquisou ou tentou? O que ainda falta?',type:'text',optional:true}
+ ],
+ [
+  {id:'future_finance',title:'Você já estimou quanto poderia sobrar após as despesas de um imóvel?',type:'radio',options:['Sim, fiz uma simulação com receitas e despesas','Tenho apenas uma ideia aproximada','Conheço a receita esperada, mas ainda não estimei todas as despesas','Ainda não fiz essa conta','Não se aplica','Prefiro não responder']},
+  {id:'future_finance_method',title:'Como você gostaria de acompanhar as finanças?',type:'radio',options:['Planilha própria','Sistema de gestão','Relatório da gestora ou do contador','Extratos e repasses dos canais','Ainda não decidi','Não se aplica']},
+  {id:'future_concerns',title:'Quais dúvidas mais pesam ao pensar em investir ou administrar imóveis?',type:'check',max:3,options:['Saber se o investimento vale a pena','Estimar ocupação e receita','Prever despesas e lucro líquido','Entender taxas e impostos','Confiar na gestora ou nos prestadores','Encontrar tempo para a operação','Aprender a anunciar e receber hóspedes','Não tenho dúvidas no momento','Outra dúvida','Não se aplica'],exclusive:['Não tenho dúvidas no momento','Não se aplica']},
+  {id:'future_wish',title:'O que mais ajudaria você a começar ou a decidir?',type:'text',optional:true},
+  {id:'future_tax',title:'Como você imagina organizar as informações dos aluguéis para o contador?',type:'radio',options:['Organizaria por conta própria','Usaria um sistema que gerasse um resumo','Contaria com a gestora','Pediria ajuda ao contador','Ainda não pensei nisso','Não se aplica','Prefiro não responder']}
+ ]
+];
+export const allQuestions=[...groups.flat(),...prospectiveGroups.flat()];
+export function allVisibleQuestions(a:Answers){return stages.flatMap((_,i)=>questionsFor(i,a));}
 export function active(a:Answers){return activeRoles.includes(String(a.role||''));}
-export function visible(q:Question,a:Answers){return (!q.when || q.when==='solution'&&solutionNames.includes(String(a.solution_choice)) || q.when==='billing_amount'&&solutionNames.includes(String(a.solution_choice))&&!!billingUnit(a) || q.when==='billing_other'&&solutionNames.includes(String(a.solution_choice))&&a.billing_preference==='Outro' || q.when==='billing_limit_other'&&solutionNames.includes(String(a.solution_choice))&&!!billingUnit(a)&&a.billing_limit==='Outro valor — informar' || q.when==='active'&&active(a) || q.when==='diy'&&String(a.diy||'').startsWith('Sim,') || q.when==='trial'&&['Sim','Talvez'].includes(String(a.trial_interest)) || q.when==='cancel_other'&&Array.isArray(a.cancel)&&a.cancel.includes('Outro'));}
-export function questionsFor(step:number,a:Answers){return groups[step].filter(q=>visible(q,a)).map(q=>resolveQuestion(q,a));}
+export function visible(q:Question,a:Answers){return (!q.when || q.when==='prospective'&&!!a.role&&!active(a) || q.when==='other_role'&&a.role==='Nenhuma das anteriores' || q.when==='solution'&&solutionNames.includes(String(a.solution_choice)) || q.when==='billing_amount'&&solutionNames.includes(String(a.solution_choice))&&!!billingUnit(a) || q.when==='billing_other'&&solutionNames.includes(String(a.solution_choice))&&a.billing_preference==='Outro' || q.when==='billing_limit_other'&&solutionNames.includes(String(a.solution_choice))&&!!billingUnit(a)&&a.billing_limit==='Outro valor — informar' || q.when==='active'&&active(a) || q.when==='diy'&&String(a.diy||'').startsWith('Sim,') || q.when==='trial'&&['Sim','Talvez'].includes(String(a.trial_interest)) || q.when==='cancel_other'&&Array.isArray(a.cancel)&&a.cancel.includes('Outro'));}
+export function questionsFor(step:number,a:Answers){const source=!active(a)&&(step===1||step===2)?prospectiveGroups[step-1]:groups[step];return source.filter(q=>visible(q,a)).map(q=>resolveQuestion(q,a));}
 export function validateQuestions(qs:Question[],a:Answers){const errors:Record<string,string>={};for(const original of qs){const q=resolveQuestion(original,a);const v=a[q.id];if(q.type==='number'){if(!/^\d+$/.test(String(v||''))||Number(v)<1||Number(v)>10000)errors[q.id]='Informe um número inteiro de 1 a 10.000.';continue;}if(q.type==='text'||q.type==='input'){const limit=q.type==='input'?150:1500;if(!q.optional&&(typeof v!=='string'||!v.trim()))errors[q.id]='Preencha este campo.';else if(v!==undefined&&(typeof v!=='string'||v.length>limit))errors[q.id]=`Use um texto de até ${limit} caracteres.`;else if(q.id==='contact_channel'&&typeof v==='string'&&!validContact(v))errors[q.id]='Informe um e-mail válido ou WhatsApp com DDD.';continue;}if(q.type==='radio'){if(typeof v!=='string'||!q.options?.includes(v))errors[q.id]='Escolha uma opção.';continue;}if(!Array.isArray(v)||!v.length||v.some(x=>!q.options?.includes(x))||new Set(v).size!==v.length)errors[q.id]='Selecione ao menos uma opção.';else if(q.max&&v.length>q.max)errors[q.id]=`Escolha até ${q.max} opções.`;else if(v.length>1&&q.exclusive?.some(x=>v.includes(x)))errors[q.id]='Essa opção deve ser marcada sozinha.';}return errors;}
-export function cleanAnswers(a:Answers){const qs=active(a)?groups.flat().filter(q=>visible(q,a)):questionsFor(0,a);return Object.fromEntries(qs.map(q=>[q.id,typeof a[q.id]==='string'?(a[q.id] as string).trim():a[q.id]??'']));}
+export function cleanAnswers(a:Answers){const qs=allVisibleQuestions(a);return Object.fromEntries(qs.map(q=>[q.id,typeof a[q.id]==='string'?(a[q.id] as string).trim():a[q.id]??'']));}
 
 export function validContact(value:string){const v=value.trim();return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)||(/^[+\d\s().-]+$/.test(v)&&/^\d{10,15}$/.test(v.replace(/\D/g,'')));}
 
@@ -76,11 +100,11 @@ const percentageCuts:Record<string,number[]>={'Básico':[1,2,3,5],'Plus':[2,3,5,
 export function resolveQuestion(q:Question,a:Answers):Question{
  if(q.id!=='billing_limit')return q;
  const unit=billingUnit(a);const solution=String(a.solution_choice);const portfolio=unit===amountUnits[2];const pct=unit===amountUnits[1];const custom=unit===amountUnits[3];
- const n=Number(a.properties);const count=Number.isInteger(n)&&n>0&&n<=10000?n:1;
+ const n=Number(active(a)?a.properties:a.future_properties); const estimated=!active(a)&&(!Number.isInteger(n)||n<1); const count=Number.isInteger(n)&&n>0&&n<=10000?n:1;
  const cuts=(pct?percentageCuts[solution]:moneyCuts[solution])||[];
  const format=(v:number)=>pct?`${v}%`:`R$${(v*(portfolio?count:1)).toLocaleString('pt-BR')}`;
  const suffix=pct?' sobre as diárias recebidas':portfolio?`/mês pela carteira de ${count} imóvel(is)`:'/mês por imóvel';
  const bands=custom?[]:cuts.map((v,i)=>i===0?`Até ${format(v)}${suffix}`:`Mais de ${format(cuts[i-1])} até ${format(v)}${suffix}`);
  if(!custom&&cuts.length)bands.push(`Mais de ${format(cuts[cuts.length-1])}${suffix}`);
- return {...q,title:`Quanto você consideraria pagar por ${solution||'essa solução'}?`,hint:custom?'Escolha uma opção. Em “Outro valor”, informe a estimativa e sua unidade.':'Escolha a faixa que contém o seu valor máximo estimado. '+(portfolio?`Considere o valor mensal TOTAL pelos ${count} imóveis informados. `:pct?'Considere o percentual sobre as diárias recebidas, antes das taxas dos canais, sem limpeza ou valores reembolsados. ':'Considere o valor mensal por imóvel. ')+'As faixas são hipóteses de pesquisa, não preços de contratação.',options:['Não pagaria por essa solução',...bands,'Outro valor — informar']};
+ return {...q,title:`Quanto você consideraria pagar por ${solution||'essa solução'}?`,hint:custom?'Escolha uma opção. Em “Outro valor”, informe a estimativa e sua unidade.':'Escolha a faixa que contém o seu valor máximo estimado. '+(portfolio?estimated?'Como você ainda não definiu uma quantidade, considere uma carteira hipotética de 1 imóvel apenas para estimar. ':`Considere o valor mensal TOTAL pelos ${count} imóveis ${active(a)?'informados':'planejados'}. `:pct?'Considere o percentual sobre as diárias recebidas, antes das taxas dos canais, sem limpeza ou valores reembolsados. ':'Considere o valor mensal por imóvel. ')+'As faixas são hipóteses de pesquisa, não preços de contratação.',options:['Não pagaria por essa solução',...bands,'Outro valor — informar']};
 }

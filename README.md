@@ -38,7 +38,7 @@ A página `/admin/` apenas orienta a equipe a acessar o Netlify. Não expõe res
 
 As respostas antigas **não foram migradas**. Elas permanecem no projeto original; exporte-as pelo painel antigo quando necessário. O acompanhamento de abandonos/inícios do sistema antigo não faz parte do Netlify Forms desta versão.
 
-As regras de público do formulário original foram preservadas: quem ainda não administra imóveis tem apenas o perfil registrado. Alterar esse fluxo é uma mudança separada do envio para Netlify Forms.
+Todos os perfis podem concluir as cinco etapas. Quem já opera responde sobre a experiência real; quem ainda não opera responde sobre planos e expectativas, em campos próprios. Os campos históricos permanecem na definição do Netlify Forms.
 
 ## Desenvolvimento
 
