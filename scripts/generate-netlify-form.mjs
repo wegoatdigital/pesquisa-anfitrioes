@@ -1,8 +1,8 @@
 import {writeFileSync} from 'node:fs';
-import {allQuestions} from '../app/questions.ts';
+import {allQuestions, legacyFields} from '../app/questions.ts';
 import {FORM_NAME, META_FIELDS} from '../app/netlify-form.ts';
 
-const names = [...META_FIELDS, ...allQuestions.map(q => q.id)];
+const names = [...META_FIELDS, ...legacyFields, ...allQuestions.map(q => q.id)];
 if (new Set(names).size !== names.length) throw new Error('Campos duplicados no formulário.');
 if (names.some(name => !/^[a-z_]+$/.test(name))) throw new Error('Nome de campo inválido.');
 const html = `<!doctype html>

@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Pesquisa sobre gestão de imóveis de temporada",
-  description: "Compartilhe sua experiência na administração de imóveis de temporada em Joinville e região.",
+  description: "Compartilhe sua experiência na administração de imóveis de temporada em todo o Brasil.",
   robots: {index:false,follow:false},
   icons: {
     icon: "/favicon.svg",

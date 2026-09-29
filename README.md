@@ -1,4 +1,4 @@
-# Pesquisa de anfitriões de Joinville
+# Pesquisa nacional de anfitriões
 
 Versão preparada para **Netlify Forms**, com publicação a partir do GitHub.
 Preserva o visual, as perguntas, as cinco etapas, as validações e as regras condicionais do projeto original.
@@ -60,3 +60,6 @@ O resultado fica em `out/`. A prévia local não recebe respostas: o processamen
 
 - https://docs.netlify.com/manage/forms/setup/
 - https://docs.netlify.com/manage/forms/submissions/
+
+## Atualização nacional
+Seleções de desafios esperados, dúvidas e entregas de valor não têm limite de quantidade. O Básico inclui automações de mensagens e tarefas operacionais; o Plus acrescenta atendimento com IA. Não são mais perguntados valores de contratação nem compra avulsa do resumo anual. As colunas retiradas ficam apenas na definição estática para preservar o histórico, sem aparecer ou serem enviadas no formulário atual. O identificador interno do Netlify permanece estável para manter as respostas existentes no mesmo formulário.
